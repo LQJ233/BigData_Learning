@@ -13,7 +13,7 @@
 | [04-RDD版行动算子](./04-RDD版行动算子.md) | RDD 行动算子：count / collect / first / take / countByKey / reduce / saveAsTextFile / foreach / foreachPartition 等 | `com.Sparkcore`（Spark03xx） |
 | [05-DataFrame版转换算子](./05-DataFrame版转换算子.md) | DataFrame 转换算子：select / withColumn / filter / groupBy+agg / join / explode 等（列式 API） | `org.SparkSQL` |
 | [06-DataFrame版行动算子](./06-DataFrame版行动算子.md) | DataFrame 行动算子：show / count / collect / describe / printSchema / write 等 | `org.SparkSQL` |
-| [07-Shuffle与数据倾斜](./07-Shuffle与数据倾斜.md) | Shuffle 机制、宽窄依赖、数据倾斜成因与解决方案 | — |
+| [07-Shuffle与数据倾斜](./07-Shuffle与数据倾斜.md) | ShuffleManager 运行机制（Hash/Sort/bypass）、数据倾斜定位与八大方案、join/group by/count distinct/空值/动态分区/小文件六大场景速查、shuffle 调优参数与 AQE | — |
 | [08-SparkSQL](./08-SparkSQL.md) | 导入 JSON 建临时视图、UDF 自定义函数、UDAF 自定义聚合函数 | `org.SparkSQL` |
 | [09-SparkStreaming](./09-SparkStreaming.md) | Spark Streaming + JDBC 读取 MySQL 示例 | `SparkStream` |
 | [10-SparkWebUI](./10-SparkWebUI.md) | Spark Web UI 运维界面详解（Jobs/Stages/SQL/Executors/Storage/Environment） | — |
@@ -68,7 +68,7 @@
 2. ~~Windows 遗留路径~~：✅ 已统一为项目内相对路径（如 `Spark/src/main/data/user.json`）。
 3. **编译不过的文件**：`Spark0201`（伪代码）、`Flink01_从mysql读取数据`（依赖被注释）等，详见各文档标注。
 4. ~~硬编码数据库密码~~：✅ 已改为环境变量 `MYSQL_PASSWORD` 读取，本地运行时需先设置该环境变量。
-5. **git 仓库尚未提交**：当前 `master` 分支还没有任何 commit。
+5. ~~git 仓库尚未提交~~：✅ 已推送到 GitHub（`main` 分支）。
 
 ## 数据文件（Spark/src/main/data）
 
