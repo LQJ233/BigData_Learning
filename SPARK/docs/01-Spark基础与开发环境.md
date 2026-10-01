@@ -174,7 +174,7 @@ Spark 3.x 运行对 **Spark 版本 ↔ Scala 版本 ↔ Java 版本** 有严格�
         ↓
 3. 提交：spark-submit --class 主类 --master ... jar包
         ↓
-4. 集群运行，日志/结果回 Driver，监控看 Web UI（见 10 章）
+4. 集群运行，日志/结果回 Driver，监控看 Web UI（见 15 章）
 ```
 
 ### ② 打包（以本项目为例）

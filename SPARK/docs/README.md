@@ -7,16 +7,21 @@
 
 | 文档 | 内容 | 对应源码包 |
 |---|---|---|
-| [01-Spark基础与开发环境](./01-Spark基础与开发环境.md) | Spark 基本格式（新旧 API 对比）、Driver/Executor 架构、依赖版本 | `com.Sparkcore`（Spark00） |
+| [01-Spark基础与开发环境](./01-Spark基础与开发环境.md) | Spark 基本格式（新旧 API 对比）、Driver/Executor 架构、依赖版本、作业提交 | `com.Sparkcore`（Spark00） |
 | [02-Spark数据导入与数据结构](./02-Spark数据导入与数据结构.md) | RDD / DataFrame / Dataset 区别，从集合/文本/JSON/CSV/Parquet/MySQL 导入，Schema 与分区原理 | `com.Sparkcore`（Spark01）、`org.SparkSQL`（导入json）、`SparkStream`（test1） |
 | [03-RDD版转换算子](./03-RDD版转换算子.md) | RDD 转换算子：map / flatMap / groupBy / filter / distinct / sort / mapValues / groupByKey / reduceByKey / sortByKey / mapPartitions / join / coalesce / aggregateByKey 等 | `com.Sparkcore`（Spark02xx） |
 | [04-RDD版行动算子](./04-RDD版行动算子.md) | RDD 行动算子：count / collect / first / take / countByKey / reduce / saveAsTextFile / foreach / foreachPartition 等 | `com.Sparkcore`（Spark03xx） |
 | [05-DataFrame版转换算子](./05-DataFrame版转换算子.md) | DataFrame 转换算子：select / withColumn / filter / groupBy+agg / join / explode 等（列式 API） | `org.SparkSQL` |
 | [06-DataFrame版行动算子](./06-DataFrame版行动算子.md) | DataFrame 行动算子：show / count / collect / describe / printSchema / write 等 | `org.SparkSQL` |
-| [07-Shuffle与数据倾斜](./07-Shuffle与数据倾斜.md) | ShuffleManager 运行机制（Hash/Sort/bypass）、数据倾斜定位与八大方案、join/group by/count distinct/空值/动态分区/小文件六大场景速查、shuffle 调优参数与 AQE | — |
-| [08-SparkSQL](./08-SparkSQL.md) | 导入 JSON 建临时视图、UDF 自定义函数、UDAF 自定义聚合函数 | `org.SparkSQL` |
-| [09-SparkStreaming](./09-SparkStreaming.md) | Spark Streaming + JDBC 读取 MySQL 示例 | `SparkStream` |
-| [10-SparkWebUI](./10-SparkWebUI.md) | Spark Web UI 运维界面详解（Jobs/Stages/SQL/Executors/Storage/Environment） | — |
+| [07-Shuffle专题](./07-Shuffle专题.md) | Shuffle 机制、宽窄依赖、ShuffleManager 演进（Hash/consolidate/Sort/bypass）、shuffle 调优参数 | — |
+| [08-数据倾斜专题](./08-数据倾斜专题.md) | 现象与定位三步法、八大通用方案、join/group by/count distinct/空值/动态分区/小文件六大场景速查、AQE | — |
+| [09-SparkSQL基础](./09-SparkSQL基础.md) | 导入 JSON 建临时视图、UDF / UDAF / UDTF 三种自定义函数 | `org.SparkSQL` |
+| [10-SQL语法与内置函数](./10-SQL语法与内置函数.md) | SELECT 全家桶、7 种 JOIN、子查询、临时视图 vs 全局临时视图、内置函数速查表 | — |
+| [11-窗口函数与高阶函数](./11-窗口函数与高阶函数.md) | row_number/rank/dense_rank、lead/lag、聚合开窗、TopN 完整案例、transform/filter 等高阶函数 | — |
+| [12-SparkSQL数据工程与Hive](./12-SparkSQL数据工程与Hive.md) | write 4 种 mode、partitionBy/bucketBy 分区分桶写出、saveAsTable 与 Catalog、Hive 集成 | — |
+| [13-SparkSQL原理与性能](./13-SparkSQL原理与性能.md) | Catalyst 优化流程、谓词下推与列裁剪、explain 执行计划、AQE | — |
+| [14-SparkStreaming](./14-SparkStreaming.md) | Spark Streaming + JDBC 读取 MySQL 示例 | `SparkStream` |
+| [15-SparkWebUI](./15-SparkWebUI.md) | Spark Web UI 运维界面详解（Jobs/Stages/SQL/Executors/Storage/Environment） | — |
 
 ## 学习路径建议
 
@@ -24,10 +29,10 @@
 2. **再读 02**：搞懂 RDD / DataFrame / Dataset 三者的区别，以及如何从不同数据源导入数据；同时理解 RDD 的分区机制。
 3. **读 03、04**：RDD 版转换/行动算子，重点理解哪些算子产生 **shuffle**、`collect` 的内存风险、`foreach` vs `foreachPartition`。
 4. **读 05、06**：DataFrame 版转换/行动算子，掌握列式 API（`select`/`withColumn`/`groupBy+agg`）与调试三件套（`show`/`printSchema`/`describe`）。
-5. **读 07**：Shuffle 机制与数据倾斜，这是性能优化和面试的核心专题。
-6. **读 08**：SparkSQL 日常开发主力，掌握 UDF（一行进一行出）与 UDAF（多行进一行出）。
-7. **最后读 09**：了解老的 DStream API（`JavaStreamingContext`），生产上 Spark 3.x 更推荐 Structured Streaming。
-8. **补充读 10**：提交作业后，学会用 Spark Web UI（Jobs/Stages/SQL/Executors 等页面）监控运行、排查性能问题。
+5. **读 07、08**：先 Shuffle 机制（为什么慢），再数据倾斜（怎么治）——性能优化和面试的核心专题。
+6. **读 09~13**：SparkSQL 全家桶，按顺序走：自定义函数（09）→ SQL 语法与 JOIN（10）→ 窗口函数（11，TopN/环比/连续登录必考）→ 数据写出与 Hive（12）→ Catalyst 原理与 explain（13）。
+7. **读 14**：了解老的 DStream API（`JavaStreamingContext`），生产上 Spark 3.x 更推荐 Structured Streaming。
+8. **最后读 15**：学会用 Spark Web UI（Jobs/Stages/SQL/Executors 等页面）监控运行、排查性能问题，与 08/13 章形成"调优工具链闭环"。
 
 ## Spark 源码文件状态总览
 

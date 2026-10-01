@@ -1,10 +1,10 @@
-# 09 · Spark Streaming：流式读取 MySQL（DStream API）
+# 14 · Spark Streaming：流式读取 MySQL（DStream API）
 
 > 对应源码：[test1.java](../src/main/java/SparkStream/test1.java)
 >
 > **背景**：本例演示老一代的 Spark Streaming API（基于 DStream + `JavaStreamingContext`），通过一个**虚拟队列**触发定时批次，在每个批次中用 SparkSQL 的 JDBC 方式读取 MySQL 表并打印。生产上 Spark 3.x 更推荐 **Structured Streaming**（见文末）。
 
-## 9.1 源码与逐行解读
+## 14.1 源码与逐行解读
 
 > 对应源码：[test1.java](../src/main/java/SparkStream/test1.java)
 
@@ -79,7 +79,7 @@ public class test1 {
 }
 ```
 
-## 9.2 关键知识点
+## 14.2 关键知识点
 
 ### ① JavaStreamingContext（老 API 入口）
 
@@ -107,13 +107,13 @@ public class test1 {
 
 - Spark Streaming 不是"逐条"处理，而是**微批**：每 N 秒把这段时间的数据打包成一个 RDD 处理。因此实时性以秒级为粒度，不是毫秒级。
 
-## 9.3 运行前提与注意
+## 14.3 运行前提与注意
 
 1. **本地 MySQL**：需要本机 3306 端口存在 `test01` 库和 `emp` 表，账号 root / 密码与源码一致（或自行修改）。
 2. **数据库密码**：✅ 已改为环境变量 `MYSQL_PASSWORD` 读取，不再硬编码；本地运行时需先 `export MYSQL_PASSWORD=你的密码`。
 3. **老 API 提示**：`JavaStreamingContext`/DStream 属于 Spark 1.x~2.x 的流处理 API，Spark 3.x 官方主推 **Structured Streaming**（`spark.readStream()`），语义更强、支持 Exactly-Once。本项目以学习 DStream 概念为主即可。
 
-## 9.4 补充：Structured Streaming 的等价写法（了解即可）
+## 14.4 补充：Structured Streaming 的等价写法（了解即可）
 
 ```java
 // 结构化流定时读 JDBC 的等价思路
