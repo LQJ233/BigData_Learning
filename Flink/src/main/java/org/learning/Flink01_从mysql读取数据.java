@@ -1,6 +1,7 @@
 package org.learning;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcInputFormat;
@@ -22,14 +23,14 @@ public class Flink01_从mysql读取数据 {
                 .setUsername("root") // 数据库用户名
                 .setPassword("527806") // 数据库密码
                 .setQuery("SELECT id, name FROM mytable") // 查询语句
-                .setRowTypeInfo(new JdbcRowTypeInfo( // 定义返回的字段类型
+                // Flink 1.15 用 RowTypeInfo 描述字段类型与字段名；
+                // 旧的 JdbcRowTypeInfo（flink-jdbc 1.8 时代）已经不存在了。
+                .setRowTypeInfo(new RowTypeInfo( // 定义返回的字段类型
                         new TypeInformation[]{TypeInformation.of(Integer.class), TypeInformation.of(String.class)},
                         new String[]{"id", "name"}
                 ))
-                .setConnectionOptions(new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                        .withMaxRetryInterval(5000) // 最大重试间隔
-                        .withConnectionCheckTimeoutMillis(5000) // 连接超时时间
-                        .build())
+                // 连接超时可以单独设置；Flink 1.15 的 JdbcInputFormatBuilder
+                // 不提供 setConnectionOptions，驱动 / URL / 账号在下面直接设置。
                 .finish();
 
         // 将 JDBC 数据源转换为 DataStream
