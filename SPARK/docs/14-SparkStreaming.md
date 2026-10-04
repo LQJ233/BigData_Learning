@@ -4,6 +4,8 @@
 >
 > **背景**：本例演示老一代的 Spark Streaming API（基于 DStream + `JavaStreamingContext`），通过一个**虚拟队列**触发定时批次，在每个批次中用 SparkSQL 的 JDBC 方式读取 MySQL 表并打印。生产上 Spark 3.x 更推荐 **Structured Streaming**（见文末）。
 
+![Spark Streaming 的微批模型](./images/spark-streaming-arch.svg)
+
 ## 14.1 源码与逐行解读
 
 > 对应源码：[test1.java](../src/main/java/SparkStream/test1.java)

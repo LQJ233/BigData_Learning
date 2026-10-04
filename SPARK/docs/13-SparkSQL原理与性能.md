@@ -4,6 +4,12 @@
 
 ---
 
+![三种 Join 策略：谁 shuffle、谁广播](./images/spark-join-strategies.svg)
+
+![AQE：运行时的三个自适应优化](./images/spark-aqe.svg)
+
+![Executor 内存模型：统一内存管理](./images/spark-memory-model.svg)
+
 ## 13.1 Catalyst 优化流程
 
 一段 SQL 从文字到执行，走五步：

@@ -1,7 +1,8 @@
 # 09 · SparkSQL 基础：临时视图、UDF、UDAF 与 UDTF
 
-> 对应源码：[导入json.java](../src/main/java/org/SparkSQL/导入json.java)、[UDF.java](../src/main/java/org/SparkSQL/UDF.java)、[UDAF.java](../src/main/java/org/SparkSQL/UDAF.java)
-> 示例数据：`Spark/src/main/data/user.json`（用户姓名/年龄）
+
+
+![一条 SQL 的执行链路：Catalyst + Tungsten](./images/spark-sql-pipeline.svg)
 
 ## 9.1 导入 JSON 并创建临时视图
 
@@ -47,7 +48,7 @@ public class 导入json
 > **知识点**：
 > - `createOrReplaceTempView`：注册一个**会话级临时视图**，只在当前 SparkSession 内有效；同名视图会替换。
 > - 临时视图是只读的（查询用），不会修改原始数据文件。
-> - 源码中还有一段被注释的 `iris.json` 读取示例（`flower` 表），可自行放开体验多张表。
+
 
 **user.json 数据预览**：
 

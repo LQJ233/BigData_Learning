@@ -1,6 +1,10 @@
 # 03 · RDD 版转换算子（Transformation）
 
 
+![惰性求值：转换算子只记血缘，行动算子才真正执行](./images/spark-lazy-lineage.svg)
+
+![窄依赖 vs 宽依赖：是否需要 Shuffle](./images/spark-narrow-wide.svg)
+
 ## 算子速查表
 
 | 算子 | 作用 | 是否 shuffle |

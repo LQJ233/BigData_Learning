@@ -3,6 +3,8 @@
 > 本文档由项目内已有的 Spark 代码整理而成，保留原始代码与注释笔记，并补充了知识点说明。
 > 对应源码模块：`Spark/`（Spark 3.3.1 / Scala 2.12 / Java API / Java 8）
 
+![Spark 学习路线：15 章怎么串起来](./images/spark-roadmap.svg)
+
 ## 文档目录
 
 | 文档 | 内容 | 对应源码包 |

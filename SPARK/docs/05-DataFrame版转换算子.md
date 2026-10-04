@@ -4,6 +4,8 @@
 >
 > **核心区别**：DataFrame 的转换算子操作的是「列」，返回新的 `Dataset<Row>`，且全程是**惰性**的（同 RDD），要遇到行动算子才真正执行。
 
+![DataFrame / SQL 背后的 Catalyst 优化链路](./images/spark-sql-pipeline.svg)
+
 ## 5.1 先建立认知：列式 API vs 函数式 API
 
 | | RDD（03 章） | DataFrame / Dataset（本章） |

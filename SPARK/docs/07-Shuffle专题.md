@@ -4,6 +4,8 @@
 
 ---
 
+![为什么必须 Shuffle：把相同 Key 拉到同一个节点](./images/spark-shuffle-why.svg)
+
 ## 7.1 Shuffle 是什么
 
 **Shuffle** = 数据在集群中**跨节点重新分配**的过程。当某个算子需要把**相同 key 的数据聚合到一起**时（如 groupByKey、reduceByKey、join），不同节点上的数据必须通过磁盘 + 网络传输到"属于该 key 的节点"，这个过程就是 shuffle。
@@ -71,7 +73,7 @@ Spark 历史上先后使用过两种 ShuffleManager，理解它们的差异，�
 
 每个 task 为**下游 stage 的每一个 task** 单独创建一个磁盘文件，相同 key 的数据写入同一个文件：
 
-![未经优化的HashShuffleManager](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2016/08f3b596.png)
+![HashShuffleManager 的文件数量问题](./images/spark-shuffle-history.svg)
 
 **文件数量公式**：`每个 task 创建的文件数 = 下一个 stage 的 task 数量`
 
@@ -81,7 +83,7 @@ Spark 历史上先后使用过两种 ShuffleManager，理解它们的差异，�
 
 开启 `spark.shuffle.consolidateFiles=true` 后，引入 **shuffleFileGroup** 复用机制：同一批并行执行的 task 复用同一组文件，下一批 task 继续往里追加：
 
-![优化后的HashShuffleManager](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2016/3f3c6a82.png)
+![consolidate 优化：文件数下降但仍然线性增长](./images/spark-shuffle-history.svg)
 
 **文件数量公式**：`每个 executor 的文件数 = CPU core 数 × 下游 task 数`
 
@@ -89,7 +91,7 @@ Spark 历史上先后使用过两种 ShuffleManager，理解它们的差异，�
 
 ### 7.3.3 SortShuffleManager：普通运行机制（Spark 2.0+ 唯一机制）
 
-![SortShuffleManager普通运行机制](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2016/b6d1140d.png)
+![SortShuffleManager 普通运行机制：Map 端溢写合并 + Reduce 端按索引拉取](./images/spark-shuffle-sort.svg)
 
 运行过程四步：
 
@@ -109,7 +111,7 @@ Spark 历史上先后使用过两种 ShuffleManager，理解它们的差异，�
 1. shuffle map task 数量 **小于** `spark.shuffle.sort.bypassMergeThreshold`（默认 200）；
 2. **不是聚合类** shuffle 算子（如 join、groupByKey 这类不需要 map 端聚合的算子）。
 
-![SortShuffleManager bypass机制](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2016/35ec4dc8.png)
+![bypass 机制：不排序，直接按分区写再合并](./images/spark-shuffle-bypass.svg)
 
 运行过程：为每个下游 task 创建一个临时文件按 hash 写入，最后合并成一个文件 + 索引文件。与普通机制的本质区别：**不进行排序**，省掉排序开销——磁盘写机制与老的 HashShuffleManager 一致，只是最后多一步合并。
 

@@ -1,8 +1,9 @@
 # 01 · Spark 基础与开发环境
 
-> 对应源码：[Spark00_Spark基本格式.java](../src/main/java/com/Sparkcore/Spark00_Spark基本格式.java)
->
-> 数据导入、RDD 分区机制，以及 RDD / DataFrame / Dataset 三者的区别已独立成篇，见 [02-Spark数据导入与数据结构](./02-Spark数据导入与数据结构.md)。
+
+![Spark 运行时架构：Driver + Cluster Manager + Executor](./images/spark-arch.svg)
+
+![spark-submit 的两种部署模式：client 与 cluster](./images/spark-submit-modes.svg)
 
 ## 1.1 两种 API 写法：JavaSparkContext vs SparkSession
 
@@ -106,7 +107,7 @@ public class Spark00_Spark基本格式
 | `local[2, 3]` | 2 个"伪 Executor 进程"，每个 3 个线程（更接近真实集群） |
 
 > **为什么要理解这一点**：本地模式下 Driver 和 Executor 共享一个进程，所以：
-> - `collect()` 把数据拉回 Driver 时，本地模式数据本来就在同一进程里，看不出内存风险；但**在真实集群上，数据会通过网络跨节点传到 Driver**，数据量大就 OOM——这是 04 章 `collect` 面试题的本质。
+> - `collect()` 把数据拉回 Driver 时，本地模式数据本来就在同一进程里，看不出内存风险；但**在真实集群上，数据会通过网络跨节点传到 Driver**，数据量大就 OOM
 > - 本地模式适合学习、调试；生产环境用 `yarn` / `standalone` / `k8s` 等集群模式，`setMaster` 参数会相应改变。
 
 ---
@@ -161,7 +162,7 @@ Spark 3.x 运行对 **Spark 版本 ↔ Scala 版本 ↔ Java 版本** 有严格�
 
 ---
 
-## 1.4 作业提交：如何把代码跑起来
+## 1.4 作业提交
 
 前面章节都在写代码、本地 `main` 里跑。但真正的 Spark 作业要打包成 **jar** 后，用 **`spark-submit`** 命令提交到集群执行。这一节讲清"写好代码之后怎么办"。
 
@@ -174,7 +175,7 @@ Spark 3.x 运行对 **Spark 版本 ↔ Scala 版本 ↔ Java 版本** 有严格�
         ↓
 3. 提交：spark-submit --class 主类 --master ... jar包
         ↓
-4. 集群运行，日志/结果回 Driver，监控看 Web UI（见 15 章）
+4. 集群运行，日志/结果回 Driver，监控看 Web UI
 ```
 
 ### ② 打包（以本项目为例）

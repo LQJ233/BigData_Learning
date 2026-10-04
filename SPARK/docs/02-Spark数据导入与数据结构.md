@@ -2,7 +2,9 @@
 
 
 
-## 2.1 三大数据结构：RDD / DataFrame / Dataset
+![RDD / DataFrame / Dataset 的关系与互相转换](./images/spark-data-structures.svg)
+
+## 2.1 RDD / DataFrame / Dataset
 
 
 

@@ -4,6 +4,8 @@
 
 ---
 
+![Catalog 与 Hive 集成](./images/spark-hive-arch.svg)
+
 ## 12.1 write 的 4 种 mode
 
 `df.write().mode(x)` 决定**目标路径/表已存在时怎么办**——用错会丢数据：

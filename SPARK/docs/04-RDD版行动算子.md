@@ -2,6 +2,8 @@
 
 > **核心概念**：行动算子会**触发真正的计算**（提交 Job）。转换算子只是构建血缘（DAG），只有遇到行动算子才会真正执行。
 
+![Job → Stage → Task 三层结构](./images/spark-job-stage-task.svg)
+
 ## 4.0 转换 vs 行动：惰性求值与 Job/Stage/Task
 
 这一节是理解"行动算子"本质的钥匙，也是面试高频题。

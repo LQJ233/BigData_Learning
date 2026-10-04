@@ -4,6 +4,8 @@
 >
 > **核心概念**（同 RDD）：行动算子会**触发真正的计算**（提交 Job）。DataFrame 的转换算子是惰性的，只有遇到行动算子才真正执行。
 
+![行动算子如何触发 Job / Stage / Task](./images/spark-job-stage-task.svg)
+
 ## 6.1 行动算子速查表
 
 | 算子 | 作用 | 结果去向 |
